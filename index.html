@@ -13,20 +13,20 @@
                 <div class="col">
                     <form class="mt-5">
                         <label for="nome" class="form-label">Seu Nome:</label>
-                        <input type="text" class="form-control" id="nome" required>
+                        <input type="text" class="form-control" id="nome" required placeholder="Nome Completo">
                         <div class="invalid-feedback" id="nome-feedback">
                             Por favor, Digite nome completo
                         </div>
                         <label for="email" class="form-label">Seu e-mail:</label>
-                        <input type="email" class="form-control" id="email" required>
+                        <input type="email" class="form-control" id="email" required placeholder="emaildeteste123@gmail.com">
                         <div class="invalid-feedback" id="emailFeedback">
                             Digite um email valido
                         </div>
                         <label for="tel" class="form-label">Seu Telefone:</label>
+                        <input type="tel" class="form-control" id="tel" required placeholder="(DDD) 9 Seu Numero">
                         <div class="invalid-feedback" id="telFeedback">
                             Digite numero completo
                         </div>
-                        <input type="tel" class="form-control" id="tel" required>
                         <button class="btn btn-success mt-3">Enviar</button>
                     </form>
                 </div>
@@ -39,9 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function(){
-            $('#tel').mask('(00) 0 0000 - 0000',{
-                placeholder:'(DDD) 9 Seu Numero'
-            })
+            $('#tel').mask('(00) 0 0000 - 0000');
 
             function validaNome (nomeCompleto) {
                 const nomeArray = nomeCompleto.trim().split(' ');
