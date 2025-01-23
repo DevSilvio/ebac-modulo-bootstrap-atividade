@@ -6,61 +6,51 @@ $(document).ready(function(){
         return nomeArray.length>=2 && nomeArray.every(nome => nome.length > 1)
     }
 
-    $('#nome').on('keyup',function(){
-        const nome = $(this).val();
-        const nomeFeedback = $('#nome-feedback');
-
-        if(validaNome(nome)) {
-            $(this).removeClass('is-invalid').addClass('is-valid');
-            nomeFeedback.hide();
-        } else {
-            $(this).removeClass('is-valid').addClass('is-invalid');
-            nomeFeedback.show();
-        }
-    });
-
+    $('#nome').on('keyup', function(){
+        const nomeAtual = $(this).val();
+        const filtrandoNome = nomeAtual.replace(/[^a-zA-Z\s]/g, "");
+        $(this).val(filtrandoNome);
+    })
+    
     function validaNumero (numeroCompleto) {
         const numSemMask = numeroCompleto.replace(/\D/g, '');
         return numSemMask.length === 11;
     }
 
-    $('#tel').on('keyup', function(){
-        const tel = $(this).val();
-        const telFeedback = $('#telFeedback');
-
-        if(validaNumero(tel)) {
-            $(this).removeClass('is-invalid').addClass('is-valid');
-            telFeedback.hide();
-        } else {
-            $(this).removeClass('is-valid').addClass('is-invalid');
-            telFeedback.show();
-        }
-    })
-
     function validaEmail (email) {
-        return email.includes('@');
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+    
+    function validaCampo (campo, validacao, feedback) {
+        const valor = $(campo).val();
+        if(validacao(valor)){
+            $(campo).removeClass('is-invalid').addClass('is-valid');
+            $(feedback).hide();
+            return true;
+        } else {
+            $(campo).removeClass('is-valid').addClass('is-invalid');
+            $(feedback).show();
+            return false;
+        }
     }
 
-    $('#email').on('keyup', function(){
-        const email = $(this).val(); 
-        const emailFeedback = $('#emailFeedback'); 
-
-        if (validaEmail(email)) {
-            $(this).removeClass('is-invalid').addClass('is-valid');
-            emailFeedback.hide();
-        } else {
-            $(this).removeClass('is-valid').addClass('is-invalid');
-            emailFeedback.show();
-        }
+    $('input').on('keyup', function(){
+        const id = $(this).attr('id');
+        if(id === 'nome') validaCampo ('#nome', validaNome, '#nomeFeedback');
+        if(id === 'tel') validaCampo ('#tel', validaNumero, '#telFeedback');
+        if(id === 'email') validaCampo ('#email', validaEmail, '#emailFeedback');
     })
 
     $('form').on('submit',function(e){
-        const nome = $('#nome').val();
-        if(!validaNome(nome)) {
+        let formEValido = true;
+
+        formEValido = validaCampo('#nome', validaNome, '#nomeFeedback');
+        formEValido = validaCampo('#tel', validaNumero, '#telFeedback');
+        formEValido = validaCampo ('#email', validaEmail, '#emailFeedback');
+
+        if(!formEValido) {
             e.preventDefault();
-            $('#nome').addClass('is-invalid');
-            $('nome-feedback').show();
         }
     })
-    
 });
