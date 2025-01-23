@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Atividade</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form">
+            <div class="row">
+                <div class="col">
+                    <form class="mt-5">
+                        <label for="nome" class="form-label">Seu Nome:</label>
+                        <input type="text" class="form-control" id="nome" required>
+                        <div class="invalid-feedback" id="nome-feedback">
+                            Por favor, Digite nome completo
+                        </div>
+                        <label for="email" class="form-label">Seu e-mail:</label>
+                        <input type="email" class="form-control" id="email" required>
+                        <div class="invalid-feedback" id="emailFeedback">
+                            Digite um email valido
+                        </div>
+                        <label for="tel" class="form-label">Seu Telefone:</label>
+                        <div class="invalid-feedback" id="telFeedback">
+                            Digite numero completo
+                        </div>
+                        <input type="tel" class="form-control" id="tel" required>
+                        <button class="btn btn-success mt-3">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#tel').mask('(00) 0 0000 - 0000',{
+                placeholder:'(DDD) 9 Seu Numero'
+            })
+
+            function validaNome (nomeCompleto) {
+                const nomeArray = nomeCompleto.trim().split(' ');
+                return nomeArray.length>=2 && nomeArray.every(nome => nome.length > 1)
+            }
+
+            $('#nome').on('keyup',function(){
+                const nome = $(this).val();
+                const nomeFeedback = $('#nome-feedback');
+
+                if(validaNome(nome)) {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    nomeFeedback.hide();
+                } else {
+                    $(this).removeClass('is-valid').addClass('is-invalid');
+                    nomeFeedback.show();
+                }
+            });
+
+            function validaNumero (numeroCompleto) {
+                const numSemMask = numeroCompleto.replace(/\D/g, '');
+                return numSemMask.length === 11;
+            }
+
+            $('#tel').on('keyup', function(){
+                const tel = $(this).val();
+                const telFeedback = $('#telFeedback');
+
+                if(validaNumero(tel)) {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    telFeedback.hide();
+                } else {
+                    $(this).removeClass('is-valid').addClass('is-invalid');
+                    telFeedback.show();
+                }
+            })
+
+            function validaEmail (email) {
+                return email.includes('@');
+            }
+
+            $('#email').on('keyup', function(){
+                const email = $(this).val(); 
+                const emailFeedback = $('#emailFeedback'); 
+
+                if (validaEmail(email)) {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    emailFeedback.hide();
+                } else {
+                    $(this).removeClass('is-valid').addClass('is-invalid');
+                    emailFeedback.show();
+                }
+            })
+
+            $('form').on('submit',function(e){
+                const nome = $('#nome').val();
+                if(!validaNome(nome)) {
+                    e.preventDefault();
+                    $('#nome').addClass('is-invalid');
+                    $('nome-feedback').show();
+                }
+            })
+            
+        });
+    </script>
+</body>
+</html>
